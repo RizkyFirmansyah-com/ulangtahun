@@ -532,6 +532,85 @@
       letter-spacing: .2em;
       text-transform: uppercase;
     }
+    /* ── MEMORY MODAL ── */
+.memory-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s ease;
+}
+
+.memory-modal.active{
+  opacity: 1;
+  visibility: visible;
+}
+
+.memory-box{
+  width: 90%;
+  max-width: 480px;
+  background: rgba(255,255,255,.92);
+  border-radius: 28px;
+  padding: 1.2rem;
+  animation: popup .35s ease;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.18);
+}
+
+.memory-img{
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.memory-title{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  color: var(--pink-deep);
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.memory-desc{
+  margin-top: .8rem;
+  text-align: center;
+  line-height: 1.8;
+  color: #7c5963;
+  font-size: .95rem;
+  font-weight: 300;
+}
+
+.memory-close{
+  position: absolute;
+  margin-top: -8px;
+  right: 24px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  z-index: 2;
+}
+
+@keyframes popup{
+  from{
+    transform: scale(.8);
+    opacity: 0;
+  }
+
+  to{
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
     .footer-name {
       font-family: 'Cormorant Garamond', serif;
@@ -675,42 +754,69 @@
     <h2 class="section-title">Momen <em>Terindah</em></h2>
     <div class="photo-grid">
 
-  <div class="photo-frame">
-    <div class="photo-placeholder">
-      <img src="a.jpeg" class="photo-img">
+    <div class="photo-frame"
+    onclick="openMemory(
+    'a.jpeg',
+    'Beli tasss',
+    'Aku suka momen ini,kamu ketawa lepasss bangett,heppyyy bngttt,karna kamu beli tas,kalo aku ada duit aku beliin kamu lagi yaa  sayangg.'
+    )">
+
+      <div class="photo-placeholder">
+        <img src="a.jpeg" class="photo-img">
+      </div>
+
+      <div class="photo-overlay"></div>
+
     </div>
 
-
-    <div class="photo-overlay"></div>
-  </div>
-
-  <div class="photo-frame">
-    <div class="photo-placeholder">
-      <img src="b.jpeg" class="photo-img">
+    <div class="photo-frame"
+    onclick="openMemory(
+    'b.jpeg',
+    'aku foto ama lita',
+    'serem bangtt, aku kaya lagi foto sama ibu lita anjirr,serem bgtt mana pose kamu kaya jaman dulu + efek nya juga kaya jaman dulu anjirrr.'
+    )">
+      <div class="photo-placeholder">
+        <img src="b.jpeg" class="photo-img">
+      </div>
+      <div class="photo-overlay"></div>
     </div>
-    <div class="photo-overlay"></div>
-  </div>
 
-  <div class="photo-frame">
+  <div class="photo-frame"
+    onclick="openMemory(
+    'c.jpeg',
+    'Momen Spesial',
+    'Momen ini sangat berarti bagi aku karena kita merayakan perayaan yang indah bersama keluarga.'
+  )">
     <div class="photo-placeholder">
       <img src="c.jpeg" class="photo-img">
     </div>
     <div class="photo-overlay"></div>
   </div>
 
-  <div class="photo-frame">
+  <div class="photo-frame"
+    onclick="openMemory(
+    'd.jpeg',
+    'Momen Spesial',
+    'Momen ini sangat berarti bagi aku karena kita merayakan perayaan yang indah bersama keluarga.'
+  )">
     <div class="photo-placeholder">
-      <img src="foto4.jpg" class="photo-img">
+      <img src="d.jpeg" class="photo-img">
     </div>
     <div class="photo-overlay"></div>
   </div>
 
-  <div class="photo-frame">
+   <div class="photo-frame"
+    onclick="openMemory(
+    'e.jpeg',
+    'foto aku paling bagus ktnya',
+    'kata kamu ini foto aku senyum paling baguss,iyaa taa,aku ngerasanya engga si awoaokowakoakwokaw,tapi oke laa tone warna nyaaaaaaaaa,kerennn.'
+  )">
     <div class="photo-placeholder">
-      <img src="foto5.jpg" class="photo-img">
+      <img src="e.jpeg" class="photo-img">
     </div>
     <div class="photo-overlay"></div>
   </div>
+
 
     <div class="photo-frame">
     <div class="photo-placeholder">
@@ -902,6 +1008,7 @@ function startCountdown() {
 
 startCountdown();
 
+
 /* ═══════════════════════════════
    MUSIC TOGGLE
 ═══════════════════════════════ */
@@ -937,6 +1044,39 @@ function burst() {
   }
   setTimeout(() => { particles.splice(60); }, 3000);
 }
+
+function openMemory(img, title, desc){
+
+  document.getElementById('memoryModal')
+  .classList.add('active');
+
+  document.getElementById('memoryImg').src = img;
+
+  document.getElementById('memoryTitle').innerText = title;
+
+  document.getElementById('memoryDesc').innerText = desc;
+}
+
+function closeMemory(){
+  document.getElementById('memoryModal')
+  .classList.remove('active');
+}
+
 </script>
+<!-- MEMORY MODAL -->
+<div class="memory-modal" id="memoryModal">
+  <div class="memory-box">
+
+    <span class="memory-close" onclick="closeMemory()">×</span>
+
+    <img id="memoryImg" src="" class="memory-img">
+
+    <h2 id="memoryTitle" class="memory-title"></h2>
+
+    <p id="memoryDesc" class="memory-desc"></p>
+
+  </div>
+</div>
+
 </body>
 </html>
