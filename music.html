@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body style="margin:0">
+
+<audio id="bgMusic" autoplay loop>
+  <source src="p.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById('bgMusic');
+
+const savedTime = localStorage.getItem('musicTime');
+
+if(savedTime){
+  music.currentTime = savedTime;
+}
+
+setInterval(() => {
+  localStorage.setItem(
+    'musicTime',
+    music.currentTime
+  );
+},1000);
+
+music.play().catch(()=>{});
+</script>
+
+</body>
+
+</html>

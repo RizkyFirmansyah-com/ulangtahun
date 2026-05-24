@@ -2,6 +2,9 @@
    PARTICLES
 ═══════════════════════════════ */
 const canvas = document.getElementById('particles');
+
+if(canvas){
+
 const ctx = canvas.getContext('2d');
 let W, H, particles = [];
 
@@ -56,7 +59,7 @@ function animate() {
   requestAnimationFrame(animate);
 }
 animate();
-
+}
 /* ═══════════════════════════════
    SCROLL REVEAL
 ═══════════════════════════════ */
@@ -105,31 +108,92 @@ function startCountdown() {
   countdownInterval = setInterval(tick, 1000);
 }
 
-startCountdown();
+if(document.getElementById('cd-days')){
+  startCountdown();
+}
 
 
 /* ═══════════════════════════════
    MUSIC TOGGLE
 ═══════════════════════════════ */
-const musicBtn = document.getElementById('musicBtn');
-const bgMusic  = document.getElementById('bgMusic');
-let playing = false;
+const bgMusic = document.getElementById('bgMusic');
 
-musicBtn.addEventListener('click', () => {
-  if (playing) {
-    bgMusic.pause();
-    musicBtn.textContent = '🎵';
-  } else {
-    bgMusic.play().catch(() => {});
-    musicBtn.textContent = '⏸';
+const musicBtn = document.getElementById('musicBtn');
+
+let playing = localStorage.getItem('musicPlaying') === 'true';
+
+
+/* ambil posisi terakhir */
+window.addEventListener('load', () => {
+
+  const savedTime =
+    localStorage.getItem('musicTime');
+
+  if(savedTime){
+    bgMusic.currentTime = savedTime;
   }
-  playing = !playing;
+
+  if(playing){
+
+    bgMusic.play().catch(() => {});
+
+    musicBtn.textContent = '⏸';
+
+  }
+
 });
 
+
+/* update posisi lagu terus */
+setInterval(() => {
+
+  localStorage.setItem(
+    'musicTime',
+    bgMusic.currentTime
+  );
+
+}, 1000);
+
+
+/* tombol music */
+if(musicBtn){
+
+musicBtn.addEventListener('click', () => {
+
+  if(bgMusic.paused){
+
+    bgMusic.play();
+
+    localStorage.setItem(
+      'musicPlaying',
+      'true'
+    );
+
+    musicBtn.textContent = '⏸';
+
+  }else{
+
+    bgMusic.pause();
+
+    localStorage.setItem(
+      'musicPlaying',
+      'false'
+    );
+
+    musicBtn.textContent = '🎵';
+  }
+  
+
+});
+}
 /* ═══════════════════════════════
    CONFETTI ON HERO CLICK
 ═══════════════════════════════ */
-document.querySelector('.hero').addEventListener('click', burst);
+const hero = document.querySelector('.hero');
+
+if(hero){
+  hero.addEventListener('click', burst);
+}
 
 function burst() {
   for (let i = 0; i < 12; i++) {
@@ -159,6 +223,8 @@ document.addEventListener('click', function(e){
   const burger = document.querySelector('.burger-btn');
 
   if(
+    sidebar &&
+    burger &&
     !sidebar.contains(e.target) &&
     !burger.contains(e.target)
   ){
@@ -168,6 +234,11 @@ document.addEventListener('click', function(e){
 });
 
 function openMemory(img, title, desc){
+
+  const modal =
+  document.getElementById('memoryModal');
+
+  if(!modal) return;
 
   document.getElementById('memoryModal')
   .classList.add('active');
