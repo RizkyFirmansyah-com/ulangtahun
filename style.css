@@ -1038,7 +1038,7 @@
 
   object-fit: cover;
 
-  opacity: .28;
+  opacity: .20;
 
   filter:
   brightness(.8)
@@ -1166,6 +1166,9 @@
 
   line-height: 1.8;
 }
+
+
+
 
 
 /* ───────── MOBILE ───────── */
